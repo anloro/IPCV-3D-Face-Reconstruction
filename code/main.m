@@ -12,8 +12,8 @@ left and middle checkerboard images, and another calibration with the same proce
 %}
 
 % stereoCameraCalibrator
-load('stereoParamLtM');
-load('stereoParamMtR');
+load('calibration/stereoParamLtM');
+load('calibration/stereoParamMtR');
 
 % Colour normalization script
 I1 = imread("images/subject1/subject1Middle/subject1_Middle_1.jpg");
