@@ -30,3 +30,38 @@ I2 = imread("images/subject1/subject1Middle/subject1_Middle_364.jpg");
 [Inorm1, Inorm2] = colourNorm(I1,I2);
 figure; imshow(Inorm1)
 figure; imshow(Inorm2)
+
+
+%% Background Removal
+% Middle
+back_mask = background_removal(I_Middle);
+back_mask = cat(3, back_mask, back_mask, back_mask);
+I_Middle_masked = I_Middle;
+I_Middle_masked(imcomplement(back_mask)) = 0;
+figure; imshow(I_Middle_masked);
+skin_mask = skin_detection(I_Middle_masked);
+skin_mask = cat(3, skin_mask, skin_mask, skin_mask);
+I_Middle_masked(imcomplement(skin_mask)) = 0;
+figure; imshow(I_Middle_masked);
+
+% Left
+back_mask = background_removal(I_Left);
+back_mask = cat(3, back_mask, back_mask, back_mask);
+I_Left_masked = I_Left;
+I_Left_masked(imcomplement(back_mask)) = 0;
+figure; imshow(I_Left_masked);
+skin_mask = skin_detection(I_Left_masked);
+skin_mask = cat(3, skin_mask, skin_mask, skin_mask);
+I_Left_masked(imcomplement(skin_mask)) = 0;
+figure; imshow(I_Left_masked);
+
+% Right
+back_mask = background_removal(I_Right);
+back_mask = cat(3, back_mask, back_mask, back_mask);
+I_Right_masked = I_Right;
+I_Right_masked(imcomplement(back_mask)) = 0;
+figure; imshow(I_Right_masked);
+skin_mask = skin_detection(I_Right_masked);
+skin_mask = cat(3, skin_mask, skin_mask, skin_mask);
+I_Right_masked(imcomplement(skin_mask)) = 0;
+figure; imshow(I_Right_masked);
