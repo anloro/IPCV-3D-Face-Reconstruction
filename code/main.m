@@ -31,8 +31,8 @@ I_Right = imread("images/subject1/subject1Right/subject1_Right_1.jpg");
 [I_Left, I_Middle, I_Right] = colourNorm(I_Left,I_Middle, I_Right);
 
 % Rectification of the images
-[I_Left_Recti, I_LeftMid_Recti] = rectifyStereoImages(I_Left, I_Middle, stereoParLtM);
-[I_MidRight_Recti, I_Right_Recti] = rectifyStereoImages(I_Middle, I_Right, stereoParMtR);
+[I_Left_Recti, I_LeftMid_Recti] = rectifyStereoImages(I_Left, I_Middle, stereoParLtM, 'OutputView', 'full');
+[I_MidRight_Recti, I_Right_Recti] = rectifyStereoImages(I_Middle, I_Right, stereoParMtR, 'OutputView', 'full');
 % Check the sizes of the images
 [IL_r, IL_c, ~] = size(I_Left_Recti)
 [IM_r, IM_c, ~] = size(I_MidRight_Recti)
