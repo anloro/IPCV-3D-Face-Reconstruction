@@ -10,9 +10,9 @@ grayIm = rgb2gray(im);
 %% Step 2: Detect Entire Cell
 [~, threshold] = edge(grayIm, 'sobel');
 fudgeFactor = 0.5;
-BWs = ut_edge(grayIm, 'c', 's', 1.5, 't', threshold * fudgeFactor, 'h', [0.1 0.05]);
-%figure
-%imshow(BWs)
+BWs = ut_edge(grayIm, 'c', 's', 1.5, 't', threshold * fudgeFactor, 'h', [0.1 0.02]);
+% figure
+% imshow(BWs)
 %title('Binary Gradient Mask')
 
 %% Step 3: Dilate the Image

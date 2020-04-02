@@ -1,4 +1,4 @@
-function [Inorm1, Inorm2] = colourNorm(I1,I2)
+function [Inorm1, Inorm2, Inorm3] = colourNorm(I1,I2,I3)
 % This function gets 2 images and computes the mean and standard deviation
 % for each channel of both images together. Then it uses these parameters
 % to normalize the images and return them.
@@ -6,9 +6,11 @@ function [Inorm1, Inorm2] = colourNorm(I1,I2)
 % Let's assume that the images are of the same size
     I1 = double(I1); % The functions need double data type
     I2 = double(I2);
+    I3 = double(I3);
     [n,m,ch] = size(I1);
     Inorm1 = zeros(n,m,ch);
     Inorm2 = zeros(n,m,ch);
+    Inorm3 = zeros(n,m,ch);
     mn = ones(ch,1);
     st = ones(ch,1);
     for ii = 1:ch % For each channel
@@ -20,5 +22,6 @@ function [Inorm1, Inorm2] = colourNorm(I1,I2)
         maxI = mn(ii)+st(ii);
         Inorm1(:,:,ii) = mat2gray(I1(:,:,ii),[minI maxI]); % Normalize
         Inorm2(:,:,ii) = mat2gray(I2(:,:,ii),[minI maxI]); % Normalize
+        Inorm3(:,:,ii) = mat2gray(I3(:,:,ii),[minI maxI]); % Normalize
     end
 end
