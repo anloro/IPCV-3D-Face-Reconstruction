@@ -29,7 +29,7 @@ binaryImage = bwareaopen(binaryImage, 5000);
 
 % Extract the largest area
 outputMask = bwareafilt(binaryImage, 1);
-imshow(outputMask)
+% imshow(outputMask)
 
 % Display the image.
 %figure
