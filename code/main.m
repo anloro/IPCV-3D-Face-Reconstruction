@@ -19,14 +19,20 @@ load('calibration/stereoParamLmono')
 
 % Images acquisition
 % Subject 1
+
 I_Left = imread("images/subject1/subject1Left/subject1_Left_1.jpg");
 I_Middle = imread("images/subject1/subject1Middle/subject1_Middle_1.jpg");
 I_Right = imread("images/subject1/subject1Right/subject1_Right_1.jpg");
+disparityRange = [270,334]; % Determined graphically
+
 
 % Subject 2
-% I_Left = imread("images/subject2/subject2_Left/subject2_Left_1.jpg");
-% I_Middle = imread("images/subject2/subject2_Middle/subject2_Middle_1.jpg");
-% I_Right = imread("images/subject2/subject2_Right/subject2_Right_1.jpg");
+%{
+I_Left = imread("images/subject2/subject2_Left/subject2_Left_1.jpg");
+I_Middle = imread("images/subject2/subject2_Middle/subject2_Middle_1.jpg");
+I_Right = imread("images/subject2/subject2_Right/subject2_Right_1.jpg");
+disparityRange = [310,374];
+%}
 
 % Colour normalization
 [I_Left, I_Middle, I_Right] = colourNorm(I_Left,I_Middle, I_Right);
@@ -77,6 +83,22 @@ close all
 %% Stereo feature extraction
 featuresLM = getFeatures(I_Left_Recti, I_LeftMid_Recti);
 featuresRM = getFeatures(I_MidRight_Recti, I_Right_Recti);
+
+%% Disparity Map and Unreliable Disparities
+% stereoAnaglyph used to graphically determine disparityRange.
+% Measure distance between two points 
+%{
+A = stereoAnaglyph(I_Left_Recti, I_LeftMid_Recti);
+tool = imtool(A);
+waitfor(tool);
+%}
+
+mapLM = disparityMap(I_Left_Recti, I_LeftMid_Recti, disparityRange);
+mapMR = disparityMap(I_MidRight_Recti, I_Right_Recti, disparityRange);
+
+unreliableLM = unreliableDisparities(mapLM);
+unreliableMR = unreliableDisparities(mapMR);
+
 %% Reconstruct 3D location of the extracted points
 ptCloudLM = getPtCloud(I_Left_Recti, I_LeftMid_Recti,...
     stereoParLtM,featuresLM);
