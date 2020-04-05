@@ -23,15 +23,17 @@ load('calibration/stereoParamLmono')
 I_Left = imread("images/subject1/subject1Left/subject1_Left_1.jpg");
 I_Middle = imread("images/subject1/subject1Middle/subject1_Middle_1.jpg");
 I_Right = imread("images/subject1/subject1Right/subject1_Right_1.jpg");
-disparityRange = [270,334]; % Determined graphically
-
+disparityRange1 = [270,334]; % Determined graphically
+disparityRange2 = [280,344]; % Determined graphically
+%}
 
 % Subject 2
 %{
 I_Left = imread("images/subject2/subject2_Left/subject2_Left_1.jpg");
 I_Middle = imread("images/subject2/subject2_Middle/subject2_Middle_1.jpg");
 I_Right = imread("images/subject2/subject2_Right/subject2_Right_1.jpg");
-disparityRange = [310,374];
+disparityRange1 = [310,374]; % Determined graphically
+disparityRange2 = [310,374]; % Determined graphically
 %}
 
 % Colour normalization
@@ -91,10 +93,13 @@ featuresRM = getFeatures(I_MidRight_Recti, I_Right_Recti);
 A = stereoAnaglyph(I_Left_Recti, I_LeftMid_Recti);
 tool = imtool(A);
 waitfor(tool);
+A = stereoAnaglyph(I_MidRight_Recti, I_Right_Recti);
+tool = imtool(A);
+waitfor(tool);
 %}
 
-mapLM = disparityMap(I_Left_Recti, I_LeftMid_Recti, disparityRange);
-mapMR = disparityMap(I_MidRight_Recti, I_Right_Recti, disparityRange);
+mapLM = disparityMap(I_Left_Recti, I_LeftMid_Recti, disparityRange1);
+mapMR = disparityMap(I_MidRight_Recti, I_Right_Recti, disparityRange2);
 
 unreliableLM = unreliableDisparities(mapLM);
 unreliableMR = unreliableDisparities(mapMR);
