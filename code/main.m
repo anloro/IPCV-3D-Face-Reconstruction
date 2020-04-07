@@ -109,3 +109,15 @@ ptCloudLM = getPtCloud(I_Left_Recti, I_LeftMid_Recti,...
     stereoParLtM,featuresLM);
 ptCloudRM = getPtCloud(I_MidRight_Recti, I_Right_Recti,...
     stereoParMtR,featuresRM);
+    
+   
+%% 3D
+xyzPointsLM = reconstructScene(mapLM,stereoParLtM);
+xyzPointsMR = reconstructScene(mapMR,stereoParMtR);
+
+ptCloud_LM = pointCloud(xyzPointsLM,'Color', I_Left_Recti);
+ptCloud_MR = pointCloud(xyzPointsMR,'Color', I_MidRight_Recti);
+
+leftMesh = cloudMesh(mapLM,xyzPointsLM, I_Left_Recti, unreliableLM);
+rightMesh = cloudMesh(mapMR,xyzPointsMR, I_MidRight_Recti, unreliableMR);
+
