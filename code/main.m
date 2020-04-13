@@ -118,6 +118,11 @@ xyzPointsMR = reconstructScene(mapMR,stereoParMtR);
 ptCloud_LM = pointCloud(xyzPointsLM,'Color', I_Left_Recti);
 ptCloud_MR = pointCloud(xyzPointsMR,'Color', I_MidRight_Recti);
 
+[ptCloud_LM,indices] = removeInvalidPoints(ptCloud_LM);
+[ptCloud_MR,indices] = removeInvalidPoints(ptCloud_MR);
+ptCloud_LM = pcdenoise(ptCloud_LM);
+ptCloud_MR = pcdenoise(ptCloud_MR);
+
 leftMesh = cloudMesh(mapLM,xyzPointsLM, I_Left_Recti, unreliableLM);
 rightMesh = cloudMesh(mapMR,xyzPointsMR, I_MidRight_Recti, unreliableMR);
 
