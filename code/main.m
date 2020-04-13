@@ -20,21 +20,21 @@ load('calibration/stereoParamLmono')
 % Images acquisition
 % Subject 1
 
-I_Left = imread("images/subject1/subject1Left/subject1_Left_1.jpg");
-I_Middle = imread("images/subject1/subject1Middle/subject1_Middle_1.jpg");
-I_Right = imread("images/subject1/subject1Right/subject1_Right_1.jpg");
-disparityRange1 = [270,334]; % Determined graphically
-disparityRange2 = [280,344]; % Determined graphically
+% I_Left = imread("images/subject1/subject1Left/subject1_Left_1.jpg");
+% I_Middle = imread("images/subject1/subject1Middle/subject1_Middle_1.jpg");
+% I_Right = imread("images/subject1/subject1Right/subject1_Right_1.jpg");
+% disparityRange1 = [270,334]; % Determined graphically
+% disparityRange2 = [280,344]; % Determined graphically
 %}
 
 % Subject 2
-%{
+
 I_Left = imread("images/subject2/subject2_Left/subject2_Left_1.jpg");
 I_Middle = imread("images/subject2/subject2_Middle/subject2_Middle_1.jpg");
 I_Right = imread("images/subject2/subject2_Right/subject2_Right_1.jpg");
 disparityRange1 = [310,374]; % Determined graphically
 disparityRange2 = [310,374]; % Determined graphically
-%}
+
 
 % Colour normalization
 [I_Left, I_Middle, I_Right] = colourNorm(I_Left,I_Middle, I_Right);
@@ -105,23 +105,36 @@ unreliableLM = unreliableDisparities(mapLM);
 unreliableMR = unreliableDisparities(mapMR);
 
 %% Reconstruct 3D location of the extracted points
-ptCloudLM = getPtCloud(I_Left_Recti, I_LeftMid_Recti,...
-    stereoParLtM,featuresLM);
-ptCloudRM = getPtCloud(I_MidRight_Recti, I_Right_Recti,...
-    stereoParMtR,featuresRM);
+% ptCloudLM = getPtCloud(I_Left_Recti, I_LeftMid_Recti,...
+%     stereoParLtM,featuresLM);
+% ptCloudRM = getPtCloud(I_MidRight_Recti, I_Right_Recti,...
+%     stereoParMtR,featuresRM);
     
    
 %% 3D
 xyzPointsLM = reconstructScene(mapLM,stereoParLtM);
 xyzPointsMR = reconstructScene(mapMR,stereoParMtR);
-
+    
 ptCloud_LM = pointCloud(xyzPointsLM,'Color', I_Left_Recti);
 ptCloud_MR = pointCloud(xyzPointsMR,'Color', I_MidRight_Recti);
 
 %[ptCloud_LM,indices] = removeInvalidPoints(ptCloud_LM);
 %[ptCloud_MR,indices] = removeInvalidPoints(ptCloud_MR);
-%ptCloud_LM = pcdenoise(ptCloud_LM);
-%ptCloud_MR = pcdenoise(ptCloud_MR);
+[ptCloud_LM, inl, otl] = pcdenoise(ptCloud_LM);
+[x, y, z] = size(xyzPointsLM);
+lin = reshape(xyzPointsLM,[1,x*y*z]);
+lin(otl) = 1;
+lin(inl) = 0;
+lin = reshape(lin,[x, y, z]);
+unreliableLM = unreliableLM | lin;
+
+[ptCloud_MR, inl, otl] = pcdenoise(ptCloud_MR);
+[x, y, z] = size(xyzPointsMR);
+lin = reshape(xyzPointsMR,[1,x*y*z]);
+lin(otl) = 1;
+lin(inl) = 0;
+lin = reshape(lin,[x, y, z]);
+unreliableMR = unreliableMR | lin;
 
 leftMesh = cloudMesh(mapLM,xyzPointsLM, I_Left_Recti, unreliableLM);
 rightMesh = cloudMesh(mapMR,xyzPointsMR, I_MidRight_Recti, unreliableMR);
